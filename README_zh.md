@@ -163,6 +163,7 @@ ws1.getCell('A1').value = { text: 'Sheet2', hyperlink: '#A1:B1' };
       <li><a href="#数据验证">数据验证</a></li>
       <li><a href="#单元格注释">单元格注释</a></li>
       <li><a href="#表格">表格</a></li>
+      <li><a href="#透视表">透视表</a></li>
       <li><a href="#样式">样式</a>
         <ul>
           <li><a href="#数字格式">数字格式</a></li>
@@ -176,6 +177,7 @@ ws1.getCell('A1').value = { text: 'Sheet2', hyperlink: '#A1:B1' };
       <li><a href="#条件格式化">条件格式化</a></li>
       <li><a href="#大纲级别">大纲级别</a></li>
       <li><a href="#图片">图片</a></li>
+      <li><a href="#形状">形状Shape</a></li>
       <li><a href="#工作表保护">工作表保护</a></li>
       <li><a href="#文件-io">文件 I/O</a>
         <ul>
@@ -1477,6 +1479,33 @@ column.totalsRowResult = 10;
 table.commit();
 ```
 
+## 透视表[⬆](#目录)<!-- Link generated with jump2header -->
+## 新增透视表到工作表
+```javascript
+    const worksheet1 = workbook.addWorksheet('Sheet1');
+    worksheet1.addRows([
+        ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
+        ['a1', 'b1', 'c1', 'd1', 'e1', 'f1', 4, 5],
+        ['a1', 'b2', 'c1', 'd2', 'e1', 'f1', 4, 5],
+        ['a2', 'b1', 'c2', 'd1', 'e2', 'f1', 14, 24],
+        ['a2', 'b2', 'c2', 'd2', 'e2', 'f2', 24, 35],
+        ['a3', 'b1', 'c3', 'd1', 'e3', 'f2', 34, 45],
+        ['a3', 'b2', 'c3', 'd2', 'e3', 'f2', 44, 45],
+    ]);
+
+    const worksheet2 = workbook.addWorksheet('Sheet2');
+    worksheet2.addPivotTable({
+        // Source of data: the entire sheet range is taken;
+        // akin to `worksheet1.getSheetValues()`.
+        sourceSheet: worksheet1,
+        // Pivot table fields: values indicate field names;
+        // they come from the first row in `worksheet1`.
+        rows: ['A', 'B', 'E'],
+        columns: ['C', 'D'],
+        values: ['H'],
+        metric: 'sum', // only 'sum' possible for now
+    });
+```
 
 ## 样式[⬆](#目录)<!-- Link generated with jump2header -->
 
@@ -2103,6 +2132,31 @@ worksheet.addImage(imageId2, {
     hyperlink: 'http://www.somewhere.com',
     tooltip: 'http://www.somewhere.com'
   }
+});
+```
+
+## 形状(Shape)
+
+### 新增形状(Shape)到工作表[⬆](#contents)
+
+```javascript
+worksheet.addShape({
+  type: 'roundRect',
+  rotation: 0,
+  fill: { type: 'solid', color: { rgb: '4499FF' } },
+  outline: { weight: 2, color: { rgb: '446699' }, dash: 'sysDash' },
+  textBody: {
+    vertAlign: 'ctr',
+    paragraphs: [
+      { alignment: 'l', runs: ["Lorem ipsum dolor sit amet, consectetur adipiscing elit."] },
+      { alignment: 'r', runs: [
+        { text: "Nulla eget odio sed libero ultrices vehicula.", font: { bold: true, color: { rgb: 'FF0000' } } },
+      ] },
+    ],
+  },
+}, 'B2:H8', {
+  hyperlink: 'https://www.example.com',
+  tooltip: 'Example Link',
 });
 ```
 
